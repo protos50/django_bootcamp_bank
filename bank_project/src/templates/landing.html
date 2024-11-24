@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}Bienvenido a nuestro Sistema Bancario{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <!-- Hero Section -->
+    <div class="relative isolate overflow-hidden bg-gradient-to-b from-primary-100/20">
+        <div class="mx-auto max-w-7xl pb-24 pt-10 sm:pb-32 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:px-8 lg:py-40">
+            <div class="px-6 lg:px-0 lg:pt-4">
+                <div class="mx-auto max-w-2xl">
+                    <div class="max-w-lg">
+                        <h1 class="mt-10 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Banca Digital Simple y Segura</h1>
+                        <p class="mt-6 text-lg leading-8 text-gray-600">
+                            Gestiona tu dinero de manera fácil y segura con nuestro sistema bancario en línea. Transferencias instantáneas, control total de tus finanzas y más.
+                        </p>
+                        <div class="mt-10 flex items-center gap-x-6">
+                            <a href="{% url 'accounts:register' %}" class="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
+                                Comenzar ahora
+                            </a>
+                            <a href="{% url 'accounts:login' %}" class="text-sm font-semibold leading-6 text-gray-900">
+                                Iniciar sesión <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-20 sm:mt-24 md:mx-auto md:max-w-2xl lg:mx-0 lg:mt-0 lg:w-screen">
+                <div class="absolute inset-y-0 right-1/2 -z-10 -mr-10 w-[200%] skew-x-[-30deg] bg-white shadow-xl shadow-primary-600/10 ring-1 ring-primary-50 md:-mr-20 lg:-mr-36" aria-hidden="true"></div>
+                <div class="shadow-lg md:rounded-3xl">
+                    <div class="bg-primary-500 [clip-path:inset(0)] md:[clip-path:inset(0_round_theme(borderRadius.3xl))]">
+                        <div class="absolute -inset-y-px left-1/2 -z-10 ml-10 w-[200%] skew-x-[-30deg] bg-primary-100 opacity-20 ring-1 ring-inset ring-white md:ml-20 lg:ml-36" aria-hidden="true"></div>
+                        <div class="relative px-6 pt-8 sm:pt-16 md:pl-16 md:pr-0">
+                            <div class="mx-auto max-w-2xl md:mx-0 md:max-w-none">
+                                <div class="w-screen overflow-hidden rounded-tl-xl bg-gray-900">
+                                    <div class="flex bg-gray-800/40 ring-1 ring-white/5">
+                                        <div class="-mb-px flex text-sm font-medium leading-6 text-gray-400">
+                                            <div class="border-b border-r border-b-white/20 border-r-white/10 bg-white/5 px-4 py-2 text-white">
+                                                Dashboard
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-6 pb-14 pt-6">
+                                        <!-- Simulación de interfaz -->
+                                        <div class="mt-4 flex items-center justify-between gap-x-4 bg-white/5 px-4 py-3 rounded-lg">
+                                            <div class="flex items-center gap-x-4">
+                                                <div class="h-8 w-8 rounded-full bg-primary-500/30"></div>
+                                                <div>
+                                                    <div class="text-sm leading-6 text-white">Transferencia recibida</div>
+                                                    <div class="text-sm leading-6 text-gray-400">De: Juan Pérez</div>
+                                                </div>
+                                            </div>
+                                            <div class="text-sm leading-6 text-green-400">+$500.00</div>
+                                        </div>
+                                        <div class="mt-4 flex items-center justify-between gap-x-4 bg-white/5 px-4 py-3 rounded-lg">
+                                            <div class="flex items-center gap-x-4">
+                                                <div class="h-8 w-8 rounded-full bg-primary-500/30"></div>
+                                                <div>
+                                                    <div class="text-sm leading-6 text-white">Depósito realizado</div>
+                                                    <div class="text-sm leading-6 text-gray-400">Depósito en efectivo</div>
+                                                </div>
+                                            </div>
+                                            <div class="text-sm leading-6 text-green-400">+$1,000.00</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-white sm:h-32"></div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+        <div class="mx-auto max-w-2xl lg:text-center">
+            <h2 class="text-base font-semibold leading-7 text-primary-600">Características principales</h2>
+            <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Todo lo que necesitas para gestionar tu dinero</p>
+            <p class="mt-6 text-lg leading-8 text-gray-600">Nuestro sistema bancario está diseñado pensando en ti, con características que hacen que gestionar tu dinero sea más fácil que nunca.</p>
+        </div>
+        <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+            <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+                <div class="flex flex-col">
+                    <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                        <i class="fas fa-shield-alt h-5 w-5 flex-none text-primary-600"></i>
+                        Seguridad Garantizada
+                    </dt>
+                    <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                        <p class="flex-auto">Tus transacciones y datos personales están protegidos con la más alta seguridad y encriptación.</p>
+                    </dd>
+                </div>
+                <div class="flex flex-col">
+                    <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                        <i class="fas fa-money-bill-wave h-5 w-5 flex-none text-primary-600"></i>
+                        Transferencias Instantáneas
+                    </dt>
+                    <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                        <p class="flex-auto">Envía y recibe dinero de forma instantánea a cualquier hora del día, sin complicaciones.</p>
+                    </dd>
+                </div>
+                <div class="flex flex-col">
+                    <dt class="flex items-center gap-x-3 text-base font-semibold leading-7 text-gray-900">
+                        <i class="fas fa-chart-line h-5 w-5 flex-none text-primary-600"></i>
+                        Control Total
+                    </dt>
+                    <dd class="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-600">
+                        <p class="flex-auto">Mantén un registro detallado de todas tus transacciones y gestiona tus finanzas de manera eficiente.</p>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-primary-50">
+        <div class="mx-auto max-w-7xl px-6 py-24 sm:px-6 sm:py-32 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">¿Listo para empezar?</h2>
+                <p class="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-600">
+                    Únete a miles de usuarios que ya confían en nuestro sistema bancario para gestionar su dinero de manera segura y eficiente.
+                </p>
+                <div class="mt-10 flex items-center justify-center gap-x-6">
+                    <a href="{% url 'accounts:register' %}" class="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
+                        Crear una cuenta gratis
+                    </a>
+                    <a href="{% url 'accounts:login' %}" class="text-sm font-semibold leading-6 text-gray-900">
+                        Iniciar sesión <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

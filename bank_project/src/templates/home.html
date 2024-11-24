@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Sistema Bancario{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col gap-8">
+            <!-- Bienvenida y Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Tarjeta de bienvenida -->
+                <div class="col-span-2 bg-white rounded-2xl shadow-sm p-6 border border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-900">Bienvenido, {{ user.get_full_name|default:user.username }}</h2>
+                    <p class="mt-2 text-gray-600">Gestiona tus finanzas de manera segura y eficiente.</p>
+                    <div class="mt-6 flex gap-4">
+                        <a href="{% url 'accounts:deposit' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
+                            <i class="fas fa-plus mr-2"></i>
+                            Depositar
+                        </a>
+                        <a href="{% url 'accounts:transfer' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Transferir
+                        </a>
+                    </div>
+                </div>
+                <!-- Tarjeta de saldo -->
+                <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-lg p-6 text-white">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium">Tu saldo actual</h3>
+                        <i class="fas fa-wallet text-primary-200"></i>
+                    </div>
+                    <p class="mt-4 text-3xl font-bold">${{ user.balance }}</p>
+                    <div class="mt-4 text-primary-100">
+                        <a href="{% url 'accounts:history' %}" class="inline-flex items-center text-sm hover:text-white">
+                            <span>Ver historial</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Usuarios -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
+                <div class="border-b border-gray-200 px-6 py-4">
+                    <h3 class="text-lg font-medium text-gray-900">Usuarios del Sistema</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuario</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre Completo</th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% for usuario in todo_los_usuarios %}
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0">
+                                            {% if usuario.profile_picture %}
+                                                <img class="h-10 w-10 rounded-full object-cover" src="{{ usuario.profile_picture.url }}" alt="">
+                                            {% else %}
+                                                <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                                    <i class="fas fa-user text-primary-600"></i>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900">{{ usuario.username }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ usuario.get_full_name }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <div class="flex justify-end space-x-3">
+                                        <a href="{% url 'accounts:transfer' %}?to={{ usuario.username }}" 
+                                           class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                                            <i class="fas fa-paper-plane mr-1"></i>
+                                            Transferir
+                                        </a>
+                                        <a href="{% url 'accounts:toggle_favorite' usuario.id %}" 
+                                           class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md {% if usuario in user.favorites.all %}text-yellow-600 bg-yellow-50 border-yellow-200 hover:bg-yellow-100{% else %}text-gray-700 bg-white hover:bg-gray-50{% endif %}">
+                                            <i class="fas fa-star mr-1"></i>
+                                            {% if usuario in user.favorites.all %}
+                                                Favorito
+                                            {% else %}
+                                                Añadir
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

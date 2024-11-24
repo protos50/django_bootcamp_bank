@@ -1,0 +1,92 @@
+[
+    {
+        "model": "accounts.transferreason",
+        "pk": 1,
+        "fields": {
+            "name": "Alquileres",
+            "description": "Pago de alquileres",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 2,
+        "fields": {
+            "name": "Aportes de capital",
+            "description": "Aportes de capital para negocios",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 3,
+        "fields": {
+            "name": "Cuota",
+            "description": "Pago de cuotas",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 4,
+        "fields": {
+            "name": "Expensas",
+            "description": "Pago de expensas",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 5,
+        "fields": {
+            "name": "Factura",
+            "description": "Pago de facturas",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 6,
+        "fields": {
+            "name": "Haberes",
+            "description": "Pago de haberes",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 7,
+        "fields": {
+            "name": "Honorarios",
+            "description": "Pago de honorarios profesionales",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 8,
+        "fields": {
+            "name": "Préstamos",
+            "description": "Préstamos personales",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 9,
+        "fields": {
+            "name": "Seguros",
+            "description": "Pago de seguros",
+            "is_active": true
+        }
+    },
+    {
+        "model": "accounts.transferreason",
+        "pk": 10,
+        "fields": {
+            "name": "Varios",
+            "description": "Otros motivos no especificados",
+            "is_active": true
+        }
+    }
+]

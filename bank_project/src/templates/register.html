@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <i class="fas fa-university text-primary-600 text-4xl mx-auto h-12 w-12 flex items-center justify-center"></i>
+        <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Crear una cuenta</h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            ¿Ya tienes una cuenta?
+            <a href="{% url 'accounts:login' %}" class="font-medium text-primary-600 hover:text-primary-500">
+                Inicia sesión aquí
+            </a>
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow-lg sm:rounded-2xl sm:px-10 border border-gray-200">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                            {{ field.label }}
+                        </label>
+                        <div class="mt-1">
+                            {{ field.errors }}
+                            {% if field.name == 'profile_picture' %}
+                                <div class="flex items-center space-x-4">
+                                    <div class="flex-shrink-0">
+                                        <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center">
+                                            <i class="fas fa-user text-primary-600 text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <input type="{{ field.field.widget.input_type }}" 
+                                               name="{{ field.name }}"
+                                               id="{{ field.id_for_label }}"
+                                               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                                               {% if field.field.required %}required{% endif %}>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <input type="{{ field.field.widget.input_type }}" 
+                                       name="{{ field.name }}"
+                                       id="{{ field.id_for_label }}"
+                                       class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+                                       {% if field.field.required %}required{% endif %}>
+                            {% endif %}
+                            {% if field.help_text %}
+                                <p class="mt-2 text-sm text-gray-500">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div>
+                    <button type="submit" 
+                            class="flex w-full justify-center rounded-md border border-transparent bg-primary-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Crear cuenta
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6">
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="bg-white px-2 text-gray-500">O regístrate con</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-2 gap-3">
+                    <div>
+                        <a href="#" class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                            <i class="fab fa-google text-red-600"></i>
+                            <span class="ml-2">Google</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="#" class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50">
+                            <i class="fab fa-github"></i>
+                            <span class="ml-2">GitHub</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

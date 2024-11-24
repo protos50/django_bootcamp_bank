@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema Bancario{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="h-full">
+    <!-- Navbar -->
+    <nav class="bg-white shadow">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 justify-between">
+                <div class="flex">
+                    <a href="{% url 'accounts:home' %}" class="flex flex-shrink-0 items-center">
+                        <i class="fas fa-university text-primary-600 text-2xl"></i>
+                        <span class="ml-2 text-xl font-semibold text-gray-900">Sistema Bancario</span>
+                    </a>
+                </div>
+
+                <div class="flex items-center">
+                    {% if user.is_authenticated %}
+                        <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                            <a href="{% url 'accounts:deposit' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                                <i class="fas fa-dollar-sign mr-1"></i>Depositar
+                            </a>
+                            <a href="{% url 'accounts:transfer' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                                <i class="fas fa-paper-plane mr-1"></i>Transferir
+                            </a>
+                            <a href="{% url 'accounts:history' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                                <i class="fas fa-history mr-1"></i>Historial
+                            </a>
+                        </div>
+
+                        <div class="ml-6 flex items-center">
+                            <span class="inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-sm font-medium text-primary-700 mr-4">
+                                <i class="fas fa-wallet mr-1"></i>${{ user.balance }}
+                            </span>
+
+                            <!-- Profile dropdown -->
+                            <div class="relative ml-3" x-data="{ open: false }" @click.away="open = false">
+                                <button @click="open = !open" class="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                    <span class="sr-only">Open user menu</span>
+                                    <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+                                </button>
+
+                                <div x-show="open" 
+                                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                     style="display: none;">
+                                    <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-id-card mr-1"></i>Mi Perfil
+                                    </a>
+                                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="flex items-center space-x-4">
+                            <a href="{% url 'accounts:login' %}" class="text-gray-900 hover:text-primary-600">
+                                <i class="fas fa-sign-in-alt mr-1"></i>Iniciar Sesión
+                            </a>
+                            <a href="{% url 'accounts:register' %}" class="rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
+                                <i class="fas fa-user-plus mr-1"></i>Registrarse
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        <div class="fixed top-4 right-4 z-50 space-y-4">
+            {% for message in messages %}
+                <div class="rounded-lg p-4 {% if message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %} shadow-md">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Contenido principal -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Alpine.js para el dropdown -->
+    <script src="//unpkg.com/alpinejs" defer></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
