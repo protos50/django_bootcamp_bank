@@ -12,7 +12,7 @@ Este proyecto es una aplicación bancaria desarrollada en Django que permite a l
 ### Instalación
 1. Clona el repositorio:
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/protos50/django_bootcamp_bank.git
    cd django_bootcamp_bank
    ```
 
