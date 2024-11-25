@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <!-- Formulario de Transferencia -->
+        <div class="bg-white shadow-lg rounded-2xl overflow-hidden mb-6">
+            <form method="post" action="{% url 'transactions:transfer' %}" class="p-6">
+                {% csrf_token %}
+                
+                <!-- Saldo Disponible -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-6">
+                    <div class="flex items-center space-x-3">
+                        <div class="h-12 w-12 rounded-full bg-primary-100 flex items-center justify-center">
+                            <i class="fas fa-wallet text-primary-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">Saldo Disponible</p>
+                            <p class="text-2xl font-bold text-primary-600">${{ request.user.balance }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campo de Usuario Destino -->
+                <div class="space-y-2 mb-6">
+                    <label for="{{ form.to_username.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.to_username.label }}
+                    </label>
+                    <div class="mt-1">
+                        {% if form.to_username.errors %}
+                        <div class="text-red-500 text-sm mb-2">
+                            {{ form.to_username.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                        {{ form.to_username }}
+                        <datalist id="users-list">
+                            {% for user in favorite_users %}
+                                <option value="{{ user.username }}">{{ user.get_full_name }} (Favorito)</option>
+                            {% endfor %}
+                            {% for user in recent_users %}
+                                <option value="{{ user.username }}">{{ user.get_full_name }}</option>
+                            {% endfor %}
+                        </datalist>
+                        {% if form.to_username.help_text %}
+                        <p class="mt-2 text-sm text-gray-500">{{ form.to_username.help_text }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Campo de Monto -->
+                <div class="space-y-2 mb-6">
+                    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.amount.label }}
+                    </label>
+                    <div class="mt-1">
+                        {% if form.amount.errors %}
+                        <div class="text-red-500 text-sm mb-2">
+                            {{ form.amount.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                        {{ form.amount }}
+                    </div>
+                </div>
+
+                <!-- Campo de Motivo -->
+                <div class="space-y-2 mb-6">
+                    <label for="{{ form.reason.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.reason.label }}
+                    </label>
+                    <div class="mt-1">
+                        {% if form.reason.errors %}
+                        <div class="text-red-500 text-sm mb-2">
+                            {{ form.reason.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                        {{ form.reason }}
+                    </div>
+                </div>
+
+                <!-- Campo de Descripción -->
+                <div class="space-y-2 mb-6">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.description.label }}
+                    </label>
+                    <div class="mt-1">
+                        {% if form.description.errors %}
+                        <div class="text-red-500 text-sm mb-2">
+                            {{ form.description.errors|join:", " }}
+                        </div>
+                        {% endif %}
+                        {{ form.description }}
+                    </div>
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex items-center justify-end space-x-4">
+                    <a href="{% url 'users:home' %}" 
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-times mr-2"></i>
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Realizar Transferencia
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sección de Usuarios -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Usuarios Favoritos -->
+            <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">
+                        <i class="fas fa-star text-yellow-400 mr-2"></i>
+                        Usuarios Favoritos
+                    </h3>
+                    {% if favorite_users %}
+                    <ul class="divide-y divide-gray-200">
+                        {% for user in favorite_users %}
+                        <li class="py-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-primary-600"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">
+                                        {{ user.get_full_name }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate">
+                                        @{{ user.username }}
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" 
+                                            onclick="document.getElementById('{{ form.to_username.id_for_label }}').value='{{ user.username }}'"
+                                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        <i class="fas fa-paper-plane mr-1"></i>
+                                        Transferir
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-gray-500 text-sm">No tienes usuarios favoritos aún.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Transferencias Recientes -->
+            <div class="bg-white shadow-lg rounded-2xl overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">
+                        <i class="fas fa-clock text-gray-400 mr-2"></i>
+                        Transferencias Recientes
+                    </h3>
+                    <div class="text-xs text-gray-500 mb-4">
+                        Debug: Número de usuarios recientes: {{ recent_users|length }}
+                    </div>
+                    {% if recent_users %}
+                    <ul class="divide-y divide-gray-200">
+                        {% for user in recent_users %}
+                        <li class="py-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                        <i class="fas fa-user text-gray-600"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 truncate">
+                                        {{ user.get_full_name }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 truncate">
+                                        @{{ user.username }}
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <button type="button" 
+                                            onclick="document.getElementById('{{ form.to_username.id_for_label }}').value='{{ user.username }}'"
+                                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                        <i class="fas fa-paper-plane mr-1"></i>
+                                        Transferir
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-gray-500 text-sm">No hay transferencias recientes.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

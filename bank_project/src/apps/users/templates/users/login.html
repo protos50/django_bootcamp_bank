@@ -7,7 +7,7 @@
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Iniciar Sesión</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
             ¿No tienes una cuenta?
-            <a href="{% url 'accounts:register' %}" class="font-medium text-primary-600 hover:text-primary-500">
+            <a href="{% url 'users:register' %}" class="font-medium text-primary-600 hover:text-primary-500">
                 Regístrate aquí
             </a>
         </p>
@@ -29,7 +29,7 @@
                 </div>
             {% endif %}
 
-            <form method="post" action="{% url 'accounts:login' %}" class="space-y-6">
+            <form method="post" action="{% url 'users:login' %}" class="space-y-6">
                 {% csrf_token %}
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Usuario</label>

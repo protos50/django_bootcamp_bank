@@ -7,7 +7,7 @@
         <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Crear una cuenta</h2>
         <p class="mt-2 text-center text-sm text-gray-600">
             ¿Ya tienes una cuenta?
-            <a href="{% url 'accounts:login' %}" class="font-medium text-primary-600 hover:text-primary-500">
+            <a href="{% url 'users:login' %}" class="font-medium text-primary-600 hover:text-primary-500">
                 Inicia sesión aquí
             </a>
         </p>
@@ -15,7 +15,15 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow-lg sm:rounded-2xl sm:px-10 border border-gray-200">
-            <form method="post" class="space-y-6">
+            {% if form.non_field_errors %}
+            <div class="mb-4 p-4 rounded-md bg-red-50 border border-red-200">
+                {% for error in form.non_field_errors %}
+                    <p class="text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'users:register' %}" class="space-y-6">
                 {% csrf_token %}
                 {% for field in form %}
                     <div>
@@ -23,7 +31,14 @@
                             {{ field.label }}
                         </label>
                         <div class="mt-1">
-                            {{ field.errors }}
+                            {% if field.errors %}
+                            <div class="mb-2">
+                                {% for error in field.errors %}
+                                    <p class="text-sm text-red-600">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            
                             {% if field.name == 'profile_picture' %}
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">
@@ -43,7 +58,8 @@
                                 <input type="{{ field.field.widget.input_type }}" 
                                        name="{{ field.name }}"
                                        id="{{ field.id_for_label }}"
-                                       class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
+                                       value="{{ field.value|default:'' }}"
+                                       class="block w-full appearance-none rounded-md border {% if field.errors %}border-red-300{% else %}border-gray-300{% endif %} px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm"
                                        {% if field.field.required %}required{% endif %}>
                             {% endif %}
                             {% if field.help_text %}

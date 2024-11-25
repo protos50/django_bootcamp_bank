@@ -7,6 +7,8 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -41,7 +43,7 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 justify-between">
                 <div class="flex">
-                    <a href="{% url 'accounts:home' %}" class="flex flex-shrink-0 items-center">
+                    <a href="{% url 'users:home' %}" class="flex flex-shrink-0 items-center hover:text-primary-600">
                         <i class="fas fa-university text-primary-600 text-2xl"></i>
                         <span class="ml-2 text-xl font-semibold text-gray-900">Sistema Bancario</span>
                     </a>
@@ -50,13 +52,13 @@
                 <div class="flex items-center">
                     {% if user.is_authenticated %}
                         <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                            <a href="{% url 'accounts:deposit' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                            <a href="{% url 'transactions:deposit' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">
                                 <i class="fas fa-dollar-sign mr-1"></i>Depositar
                             </a>
-                            <a href="{% url 'accounts:transfer' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                            <a href="{% url 'transactions:transfer' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">
                                 <i class="fas fa-paper-plane mr-1"></i>Transferir
                             </a>
-                            <a href="{% url 'accounts:history' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
+                            <a href="{% url 'transactions:history' %}" class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-primary-600">
                                 <i class="fas fa-history mr-1"></i>Historial
                             </a>
                         </div>
@@ -68,18 +70,23 @@
 
                             <!-- Profile dropdown -->
                             <div class="relative ml-3" x-data="{ open: false }" @click.away="open = false">
-                                <button @click="open = !open" class="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                                <button @click="open = !open" class="flex items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 hover:shadow-lg">
                                     <span class="sr-only">Open user menu</span>
-                                    <i class="fas fa-user-circle text-2xl text-gray-400"></i>
+                                    {% if user.profile_picture %}
+                                        <img class="h-8 w-8 rounded-full object-cover hover:opacity-80" src="{{ user.profile_picture.url }}" alt="{{ user.username }}">
+                                    {% else %}
+                                        <i class="fas fa-user-circle text-2xl text-gray-400 hover:text-primary-600"></i>
+                                    {% endif %}
+                                    <span class="ml-2 text-sm font-medium text-gray-700 hover:text-primary-600">Mi Cuenta</span>
                                 </button>
 
                                 <div x-show="open" 
                                      class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                      style="display: none;">
-                                    <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <a href="{% url 'users:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         <i class="fas fa-id-card mr-1"></i>Mi Perfil
                                     </a>
-                                    <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100">
+                                    <a href="{% url 'users:logout' %}" class="block px-4 py-2 text-sm text-red-700 hover:bg-gray-100">
                                         <i class="fas fa-sign-out-alt mr-1"></i>Cerrar Sesión
                                     </a>
                                 </div>
@@ -87,10 +94,10 @@
                         </div>
                     {% else %}
                         <div class="flex items-center space-x-4">
-                            <a href="{% url 'accounts:login' %}" class="text-gray-900 hover:text-primary-600">
+                            <a href="{% url 'users:login' %}" class="text-gray-900 hover:text-primary-600">
                                 <i class="fas fa-sign-in-alt mr-1"></i>Iniciar Sesión
                             </a>
-                            <a href="{% url 'accounts:register' %}" class="rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
+                            <a href="{% url 'users:register' %}" class="rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
                                 <i class="fas fa-user-plus mr-1"></i>Registrarse
                             </a>
                         </div>
@@ -102,10 +109,17 @@
 
     <!-- Mensajes -->
     {% if messages %}
-        <div class="fixed top-4 right-4 z-50 space-y-4">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-4 space-y-4">
             {% for message in messages %}
-                <div class="rounded-lg p-4 {% if message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %} shadow-md">
-                    {{ message }}
+                <div class="rounded-lg p-4 {% if message.tags == 'success' %}bg-green-50 text-green-800{% elif message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %} shadow-md flex items-center justify-between transition-opacity duration-500" 
+                     x-data="{ show: true }" 
+                     x-show="show" 
+                     x-init="setTimeout(() => show = false, 5000)"
+                     @click="show = false">
+                    <span>{{ message }}</span>
+                    <button class="ml-4 text-gray-400 hover:text-gray-600" @click="show = false">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             {% endfor %}
         </div>
