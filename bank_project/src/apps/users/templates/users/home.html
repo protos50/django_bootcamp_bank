@@ -13,13 +13,11 @@
                     <h2 class="text-2xl font-bold text-gray-900">Bienvenido, {{ user.get_full_name|default:user.username }}</h2>
                     <p class="mt-2 text-gray-600">Gestiona tus finanzas de manera segura y eficiente.</p>
                     <div class="mt-6 flex gap-4">
-                        <a href="{% url 'accounts:deposit' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
-                            <i class="fas fa-plus mr-2"></i>
-                            Depositar
+                        <a href="{% url 'transactions:deposit' %}" class="inline-flex items-center justify-center rounded-md bg-primary-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500">
+                            <i class="fas fa-dollar-sign mr-1"></i>Depositar
                         </a>
-                        <a href="{% url 'accounts:transfer' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                            <i class="fas fa-paper-plane mr-2"></i>
-                            Transferir
+                        <a href="{% url 'transactions:transfer' %}" class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            <i class="fas fa-paper-plane mr-1"></i>Transferir
                         </a>
                     </div>
                 </div>
@@ -31,7 +29,7 @@
                     </div>
                     <p class="mt-4 text-3xl font-bold">${{ user.balance }}</p>
                     <div class="mt-4 text-primary-100">
-                        <a href="{% url 'accounts:history' %}" class="inline-flex items-center text-sm hover:text-white">
+                        <a href="{% url 'transactions:history' %}" class="inline-flex items-center text-sm hover:text-white">
                             <span>Ver historial</span>
                             <i class="fas fa-arrow-right ml-2"></i>
                         </a>
@@ -77,18 +75,18 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex justify-end space-x-3">
-                                        <a href="{% url 'accounts:transfer' %}?to={{ usuario.username }}" 
+                                        <a href="{% url 'transactions:transfer' %}?to={{ usuario.username }}" 
                                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
                                             <i class="fas fa-paper-plane mr-1"></i>
                                             Transferir
                                         </a>
-                                        <a href="{% url 'accounts:toggle_favorite' usuario.id %}" 
-                                           class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md {% if usuario in user.favorites.all %}text-yellow-600 bg-yellow-50 border-yellow-200 hover:bg-yellow-100{% else %}text-gray-700 bg-white hover:bg-gray-50{% endif %}">
-                                            <i class="fas fa-star mr-1"></i>
-                                            {% if usuario in user.favorites.all %}
-                                                Favorito
+                                        <a href="{% url 'users:toggle_favorite' usuario.id %}" 
+                                           class="inline-flex items-center px-3 py-1.5 border text-xs font-medium rounded-md {% if usuario in user.favorite_users.all %}bg-yellow-100 text-yellow-800 border-yellow-300 hover:bg-yellow-200{% else %}text-gray-700 bg-white border-gray-300 hover:bg-gray-50{% endif %}">
+                                            <i class="fas {% if usuario in user.favorite_users.all %}fa-star text-yellow-600{% else %}fa-star-o text-gray-400{% endif %} mr-1"></i>
+                                            {% if usuario in user.favorite_users.all %}
+                                                Quitar favorito
                                             {% else %}
-                                                Añadir
+                                                Añadir a favoritos
                                             {% endif %}
                                         </a>
                                     </div>

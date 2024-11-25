@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-lg rounded-2xl overflow-hidden p-6">
+            <div class="text-center mb-8">
+                <div class="relative inline-block">
+                    <div id="profile-image-preview" class="relative">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" 
+                                 alt="Profile picture" 
+                                 class="h-32 w-32 rounded-full object-cover border-4 border-primary-100">
+                        {% else %}
+                            <div class="h-32 w-32 rounded-full bg-primary-100 flex items-center justify-center">
+                                <i class="fas fa-user text-4xl text-primary-600"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <h2 class="mt-4 text-3xl font-bold text-gray-900">{{ user.get_full_name }}</h2>
+                <p class="mt-2 text-gray-600">{{ user.email }}</p>
+            </div>
+
+            <form method="post" action="{% url 'users:profile' %}" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="rounded-md bg-red-50 p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-red-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">
+                                Se encontraron los siguientes errores:
+                            </h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <ul class="list-disc pl-5 space-y-1">
+                                    {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Profile Picture -->
+                <div class="space-y-2">
+                    <label for="{{ form.profile_picture.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Foto de Perfil
+                    </label>
+                    <div class="mt-1">
+                        {% if form.profile_picture.errors %}
+                        <div class="mb-2">
+                            {% for error in form.profile_picture.errors %}
+                                <p class="text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {{ form.profile_picture }}
+                    </div>
+                </div>
+
+                <!-- First Name -->
+                <div class="space-y-2">
+                    <label for="{{ form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Nombre
+                    </label>
+                    <div class="mt-1">
+                        {% if form.first_name.errors %}
+                        <div class="mb-2">
+                            {% for error in form.first_name.errors %}
+                                <p class="text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <input type="text" 
+                               name="first_name" 
+                               id="{{ form.first_name.id_for_label }}"
+                               value="{{ form.first_name.value|default:user.first_name }}"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="space-y-2">
+                    <label for="{{ form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Apellido
+                    </label>
+                    <div class="mt-1">
+                        {% if form.last_name.errors %}
+                        <div class="mb-2">
+                            {% for error in form.last_name.errors %}
+                                <p class="text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <input type="text" 
+                               name="last_name" 
+                               id="{{ form.last_name.id_for_label }}"
+                               value="{{ form.last_name.value|default:user.last_name }}"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="space-y-2">
+                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        Email
+                    </label>
+                    <div class="mt-1">
+                        {% if form.email.errors %}
+                        <div class="mb-2">
+                            {% for error in form.email.errors %}
+                                <p class="text-sm text-red-600">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <input type="email" 
+                               name="email" 
+                               id="{{ form.email.id_for_label }}"
+                               value="{{ form.email.value|default:user.email }}"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">
+                    </div>
+                </div>
+                
+                <div class="pt-6 flex justify-center space-x-4">
+                    <a href="{% url 'users:home' %}" 
+                       class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Cancelar
+                    </a>
+
+                    <button type="submit" 
+                            class="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-save mr-2"></i>
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener el input de tipo file y el contenedor que mostrar 
+    // el preview de la imagen
+    const profilePictureInput = document.querySelector('input[type="file"]');
+    const previewContainer = document.getElementById('profile-image-preview');
+
+    // Agregar un listener al input de tipo file para que cuando se
+    // cambie el archivo que se seleccion , se muestre el preview
+    profilePictureInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Crear un FileReader para leer el archivo seleccionado
+            const reader = new FileReader();
+            
+            // Funcion que se ejecuta cuando se termina de leer el archivo
+            // y se crea el preview de la imagen
+            reader.onload = function(e) {
+                // Crear la nueva imagen de preview
+                previewContainer.innerHTML = `
+                    <img src="${e.target.result}" 
+                         alt="Profile picture preview" 
+                         class="h-32 w-32 rounded-full object-cover border-4 border-primary-100">
+                    <div class="absolute inset-0 rounded-full bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-200">
+                        <span class="text-white text-sm">Cambiar foto</span>
+                    </div>
+                `;
+            }
+            
+            // Leer el archivo y ejecutar la funcion onload
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
+{% endblock %}

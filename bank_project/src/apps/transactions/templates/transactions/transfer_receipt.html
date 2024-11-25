@@ -92,13 +92,13 @@
                 {% endif %}
 
                 <!-- Monto -->
-                <div class="flex justify-between items-center py-4 bg-gray-50 rounded-lg px-4">
-                    <span class="text-base font-medium text-gray-900">Monto</span>
-                    <span class="text-2xl font-bold {% if transfer.from_user == request.user and transfer.transaction_type == 'transfer' %}text-red-600{% else %}text-green-600{% endif %}">
-                        {% if transfer.from_user == request.user and transfer.transaction_type == 'transfer' %}-{% endif %}
-                        ${{ transfer.amount }}
+                <div class="flex justify-between items-center py-3 border-b border-gray-100">
+                    <span class="text-sm font-medium text-gray-500">Monto</span>
+                    <span class="text-lg font-semibold {% if transfer.from_user == request.user %}text-red-600{% else %}text-green-600{% endif %}">
+                        {% if transfer.from_user == request.user %}-{% else %}+{% endif %}${{ transfer.amount|floatformat:2 }}
                     </span>
                 </div>
+
             </div>
 
             <!-- Acciones -->
@@ -108,12 +108,17 @@
                     <i class="fas fa-print mr-2"></i>
                     Imprimir
                 </button>
-                <a href="{% url 'accounts:transfer' %}" 
+                <a href="{% url 'transactions:transfer' %}" 
                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                     <i class="fas fa-paper-plane mr-2"></i>
                     Nueva Transferencia
                 </a>
-                <a href="{% url 'accounts:home' %}" 
+                <a href="{% url 'transactions:history' %}"
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <i class="fas fa-history mr-2"></i>
+                    Historial de Transacciones
+                </a>
+                <a href="{% url 'users:home' %}" 
                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                     <i class="fas fa-home mr-2"></i>
                     Volver al Inicio
