@@ -6,7 +6,7 @@ Este proyecto es una aplicación bancaria desarrollada en Django que permite a l
 ## Instrucciones para Ejecutar el Proyecto
 
 ### Requisitos Previos
-- Python 3.x
+- Python
 - PostgreSQL
 
 ### Instalación
