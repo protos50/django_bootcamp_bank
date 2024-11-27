@@ -42,7 +42,11 @@ Crea un archivo `.env` en el directorio `src` con el siguiente contenido:
 ```
 DEBUG=True
 SECRET_KEY='tu-secreto-aqui'
-DATABASE_URL='postgres://usuario:contraseña@localhost:5432/nombre_base_datos'
+DB_NAME=name_db
+DB_USER=user
+DB_PASSWORD=password
+DB_HOST=localhost
+DB_PORT=5432
 ```
 
 ## Funcionalidades Desarrolladas
